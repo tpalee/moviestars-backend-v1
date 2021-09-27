@@ -12,19 +12,20 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService)
+    {
         this.reviewService = reviewService;
     }
 
     @GetMapping(value = "/reviews")
-    public ResponseEntity getReviews() {
-        Iterable<Review> reviews;
-        reviews = reviewService.getReviews();
-        return ResponseEntity.ok(reviews);
+    public ResponseEntity <Object>getReviews() {
+        //Iterable<Review> reviews;
+        //reviews = reviewService.getReviews();
+        return ResponseEntity.ok().body(reviewService.getReviews());
     }
 
     @GetMapping(value = "/reviews/{id}")
-    public ResponseEntity getSpeler(@PathVariable long id) {
+    public ResponseEntity getReview(@PathVariable long id) {
         Review review = reviewService.findById(id);
         return ResponseEntity.ok(review);
     }

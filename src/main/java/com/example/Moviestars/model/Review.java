@@ -42,6 +42,9 @@ public class Review {
         this.movie = movie;
     }
 
+    public Review() {
+    }
+
     //getters and setters
     public long getId() {
         return id;
