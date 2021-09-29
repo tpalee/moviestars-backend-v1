@@ -53,7 +53,7 @@ public class Movie {
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL
 )
-@JsonBackReference
+/*@JsonBackReference*/
 private List<Review> reviews;
 
 

@@ -1,11 +1,9 @@
 package com.example.Moviestars.commandLineRunner;
-
-import com.example.Moviestars.controller.MovieController;
 import com.example.Moviestars.model.Movie;
 import com.example.Moviestars.model.Review;
 import com.example.Moviestars.repository.MovieRepository;
 import com.example.Moviestars.repository.ReviewRepository;
-import com.example.Moviestars.service.MovieService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +27,8 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         movieRepository.save(movie2);
         Movie movie3=new Movie("Hollowman3", "action", "nothing to see again", "http://trailer.com", "image", 8.0, false);
         movieRepository.save(movie3);
-
+        Movie movie4=new Movie("Sound of Music", "musical", "woman in clothes made of curtains singing", "http://trailer.com", "image", 4.0, false);
+        movieRepository.save(movie4);
 
         Review review1=new Review("This movie sucks!!", 3.2);
         review1.setMovie(movie1);

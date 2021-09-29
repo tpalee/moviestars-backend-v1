@@ -5,6 +5,9 @@ import com.example.Moviestars.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 public class ReviewController {
@@ -19,21 +22,21 @@ public class ReviewController {
 
     @GetMapping(value = "/reviews")
     public ResponseEntity <Object>getReviews() {
-        //Iterable<Review> reviews;
-        //reviews = reviewService.getReviews();
         return ResponseEntity.ok().body(reviewService.getReviews());
     }
 
     @GetMapping(value = "/reviews/{id}")
     public ResponseEntity getReview(@PathVariable long id) {
-        Review review = reviewService.findById(id);
-        return ResponseEntity.ok(review);
+        return ResponseEntity.ok().body(reviewService.findById(id));
     }
 
     @PostMapping(value = "/reviews")
-    public ResponseEntity addReview(@RequestBody Review review) {
-        reviewService.save(review);
-        return ResponseEntity.ok("Toegevoegd");
+    public ResponseEntity<Object> createReview(@RequestBody Review review) {
+        long newId=reviewService.createReview(review);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newId).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @DeleteMapping(value = "/reviews/{id}")

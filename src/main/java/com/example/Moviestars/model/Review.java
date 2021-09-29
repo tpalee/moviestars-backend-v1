@@ -25,7 +25,7 @@ public class Review {
 
  @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
-    @JsonManagedReference
+ /*   @JsonManagedReference*/
     private Movie movie;
 
 

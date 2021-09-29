@@ -27,7 +27,7 @@ public class ReviewService {
     }
 
 
-
+    //find all the reviews by id
     public Review findById(long nr) {
         Optional<Review> review = reviewRepository.findById(nr);
         if (review.isPresent()) {
@@ -38,20 +38,31 @@ public class ReviewService {
         }
     }
 
-    public void save(Review review) {
-        reviewRepository.save(review);
+    //create a new review
+    public long createReview(Review review) {
+        Review newReview=reviewRepository.save(review);
+        return newReview.getId();
     }
 
-    public void deleteById(long nr) {
-        try {
-            reviewRepository.deleteById(nr);
-        }
-        catch (IndexOutOfBoundsException ex) {
-            System.out.println(ex);
-            throw new RecordNotFoundException();
-        }
+    //update an existing review
+    public void updateReview(long id, Review newReview) {
+        if (!reviewRepository.existsById(id)) throw new RecordNotFoundException();
+        Review review = reviewRepository.findById(id).get();
+        review.setReview(newReview.getReview());
+        review.setRating(newReview.getRating());
+       reviewRepository.save(review);
     }
 
+    //delete a review by id
+    public void deleteById(long id) {
+        if (!reviewRepository.existsById(id)) throw new RecordNotFoundException();
+        reviewRepository.deleteById(id);
+    }
 
+    //find a review by id
+    public Optional<Review> getMovieById(long id) {
+        if (reviewRepository.existsById(id)) throw new RecordNotFoundException();
+        return reviewRepository.findById(id);
+    }
 
 }
