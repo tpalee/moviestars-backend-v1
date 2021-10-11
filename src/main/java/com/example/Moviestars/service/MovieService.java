@@ -9,32 +9,39 @@ import com.example.Moviestars.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MovieService{
+public class MovieService {
 
     private MovieRepository movieRepository;
     private final ReviewRepository reviewRepository;
 
     //constructor
     @Autowired
-    public MovieService(MovieRepository movieRepository, ReviewRepository reviewRepository){
-        this.movieRepository=movieRepository;
+    public MovieService(MovieRepository movieRepository, ReviewRepository reviewRepository) {
+        this.movieRepository = movieRepository;
         this.reviewRepository = reviewRepository;
     }
 
-    //get all the movies
-    public Collection<Movie> getMovies() {
-        return movieRepository.findAll();
-    }
 
 
-    //find all movies by title
-    public Collection<Movie> getMoviesByMovieTitle(String name) {
-        return movieRepository.findAllByMovieTitle(name);
+    //searchMovies
+    public Collection<Movie> getMovies(String name)
+    {
+        if (name.isEmpty()) {
+            return movieRepository.findAll();
+        }
+        else {
+            return movieRepository.findAllByMovieTitle(name);
+        }
+
+
     }
+
 
     //create a new movie
     public long createMovie(Movie movie) {
@@ -66,23 +73,47 @@ public class MovieService{
         return movieRepository.findById(id);
     }
 
-
-
-
+/*    //check if movie exist by Id
     public boolean MoviesExistsById(long id) {
         return false;
-    }
+    }*/
 
 
+    //Get all the reviews of the movie_Id
     public Iterable<Review> getReviews(long id) {
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isPresent()) {
             return movie.get().getReviews();
-        }
-        else {
+        } else {
             throw new RecordNotFoundException();
         }
+    }
 
+    //get the average rating of the movie
+    public double getAverageRating(long id) {
+        Optional<Movie> movie = movieRepository.findById(id);
+        if (movie.isPresent()) {
+            //list of review of the movie
+            List <Review> reviews = movie.get().getReviews();
+            //rating of movie from movieDataBaseApi else 0
+            double apiRatingValue=movie.get().getMovieRating();
+            //list to add all the ratings
+            List<Double> ratings=new ArrayList<>();
+            //total of ratings
+            double sum=0;
+                sum+=apiRatingValue;
+                ratings.add(apiRatingValue);
+            //loop over reviewslist and add each rating to the ratingslist
+            for (int i = 0; i < reviews.size(); i++) {
+                double number=(reviews.get(i).getRating());
+                ratings.add(number);
+                sum+=number;
+            }
+            //divide sum of reviews
+            return sum/ratings.size();
 
+        } else {
+            throw new RecordNotFoundException();
+        }
     }
 }

@@ -25,10 +25,13 @@ public class Review {
 
  @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "movie_id", nullable = false)
- /*   @JsonManagedReference*/
+ @JsonManagedReference
     private Movie movie;
 
 
+    public Review(long id) {
+        this.id = id;
+    }
 
     public Review(String review, double rating) {
         this.review = review;
@@ -69,7 +72,6 @@ public class Review {
     public void setRating(double rating) {
         this.rating = rating;
     }
-
 
     public Movie getMovie() { return movie; }
 

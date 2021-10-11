@@ -14,6 +14,7 @@ import java.util.Optional;
 @RequestMapping(value = "/movies")
 public class MovieController {
 
+
     @Autowired
     private MovieService movieService;
 
@@ -21,16 +22,25 @@ public class MovieController {
         this.movieService = movieService;
     }
 
+    //search movies
     @GetMapping(value = "")
-    public ResponseEntity<Object> getMovies() {
-            return ResponseEntity.ok().body(movieService.getMovies());
+    public ResponseEntity<Object>searchMovies(@RequestParam(name="title", defaultValue="") String name){
+            return ResponseEntity.ok().body(movieService.getMovies(name));
     }
 
+    //get movie by Id
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Movie>> getCustomer(@PathVariable("id") long id) {
+    public ResponseEntity<Optional<Movie>> getMovie(@PathVariable("id") long id) {
         return ResponseEntity.ok().body(movieService.getMovieById(id));
     }
 
+    // get rating of the movie
+    @GetMapping(value = "/{id}/rating")
+    public ResponseEntity<Double> getAverage(@PathVariable("id") long id) {
+        return ResponseEntity.ok().body(movieService.getAverageRating(id));
+    }
+
+    //create a new movie
     @PostMapping(value = "")
     public ResponseEntity<Object> createMovie(@RequestBody Movie movie) {
         long newId = movieService.createMovie(movie);
@@ -41,30 +51,24 @@ public class MovieController {
         return ResponseEntity.created(location).build();
     }
 
+    //update an existing movie
     @PutMapping(value = "/{id}")
     public ResponseEntity<Object> updateMovie(@PathVariable("id") long id, @RequestBody Movie movie) {
         movieService.updateMovie(id, movie);
         return ResponseEntity.noContent().build();
     }
 
+    //delete movie
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteMovie(@PathVariable("id") int id) {
         movieService.deleteMovie(id);
         return ResponseEntity.noContent().build();
     }
 
-
+    //get all reviews of a movie
     @GetMapping(value = "/{id}/reviews")
     public ResponseEntity getReviews(@PathVariable("id") int id) {
         Iterable<Review> movieReviews=movieService.getReviews(id);
         return ResponseEntity.ok(movieReviews);
     }
-
-
-
-
-
-
-
-
 }

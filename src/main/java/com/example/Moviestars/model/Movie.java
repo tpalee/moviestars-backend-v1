@@ -1,6 +1,10 @@
 package com.example.Moviestars.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +17,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "movie_title" )
+    @Column(name = "movie_title")
     private String movieTitle;
 
     @Column(name = "movie_genre")
@@ -34,7 +38,32 @@ public class Movie {
     @Column(name = "movie_is_rated")
     private boolean movieIsRated;
 
-    public Movie(String movieTitle, String movieGenre, String movieDescription, String movieTrailer, String movieImage, double movieRating, boolean movieIsRated) {
+
+    //relations
+
+    //Movie to Review relation
+    @OneToMany(
+            mappedBy = "movie",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @JsonBackReference
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<Review> reviews;
+
+    //Movies to User relation
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonManagedReference
+    private User user;
+
+
+    //constructors
+    public Movie() {
+    }
+
+
+    public Movie(String movieTitle, String movieGenre, String movieDescription, String movieTrailer, String movieImage, double movieRating, boolean movieIsRated, User user) {
         this.movieTitle = movieTitle;
         this.movieGenre = movieGenre;
         this.movieDescription = movieDescription;
@@ -42,25 +71,22 @@ public class Movie {
         this.movieImage = movieImage;
         this.movieRating = movieRating;
         this.movieIsRated = movieIsRated;
+        this.user=user;
     }
 
-    public Movie() {
-
-    }
-
-@OneToMany(
-        mappedBy = "movie",
-        fetch = FetchType.LAZY,
-        cascade = CascadeType.ALL
-)
-/*@JsonBackReference*/
-private List<Review> reviews;
 
 
-
-
+    //getters and setters
     public String getMovieDescription() {
         return movieDescription;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setMovieDescription(String movieDescription) {
@@ -123,7 +149,6 @@ private List<Review> reviews;
         this.movieGenre = movieGenre;
     }
 
-
     public List<Review>getReviews(){
         return reviews;
     }
@@ -132,9 +157,10 @@ private List<Review> reviews;
         this.reviews=reviews;
     }
 
-    //method
+    //methods
     void addReview(Review review){
         this.reviews.add(review);
     }
-
 }
+
+
