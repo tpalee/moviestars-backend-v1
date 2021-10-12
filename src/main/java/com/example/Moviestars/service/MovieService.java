@@ -73,10 +73,6 @@ public class MovieService {
         return movieRepository.findById(id);
     }
 
-/*    //check if movie exist by Id
-    public boolean MoviesExistsById(long id) {
-        return false;
-    }*/
 
 
     //Get all the reviews of the movie_Id

@@ -11,7 +11,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(nullable=false, unique=true)
+    @Column(nullable=false, unique=true, name="user_id")
     private String userName;
 
     @Column(nullable = false)
@@ -43,6 +43,18 @@ public class User {
     @JsonBackReference
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<Movie> movies;
+
+    public List<Favourite> getFavouriteMovies() {
+        return favouriteMovies;
+    }
+
+    public void setFavouriteMovies(List<Favourite> favouriteMovies) {
+        this.favouriteMovies = favouriteMovies;
+    }
+
+    @OneToMany(mappedBy = "user")
+    List<Favourite> favouriteMovies;
+
 
     public List<Movie> getMovies() {
         return movies;

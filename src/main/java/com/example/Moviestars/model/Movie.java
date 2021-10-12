@@ -1,10 +1,8 @@
 package com.example.Moviestars.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +13,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movie_id")
     private long id;
 
     @Column(name = "movie_title")
@@ -57,6 +56,17 @@ public class Movie {
     @JsonManagedReference
     private User user;
 
+//Movie to favourite relation
+@OneToMany(mappedBy = "movie")
+List<Favourite> favouriteMovies;
+
+    public List<Favourite> getFavouriteMovies() {
+        return favouriteMovies;
+    }
+
+    public void setFavouriteMovies(List<Favourite> favouriteMovies) {
+        this.favouriteMovies = favouriteMovies;
+    }
 
     //constructors
     public Movie() {
