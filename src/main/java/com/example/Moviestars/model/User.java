@@ -44,6 +44,12 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<Movie> movies;
 
+
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    List<Favourite> favouriteMovies;
+
+
     public List<Favourite> getFavouriteMovies() {
         return favouriteMovies;
     }
@@ -52,8 +58,7 @@ public class User {
         this.favouriteMovies = favouriteMovies;
     }
 
-    @OneToMany(mappedBy = "user")
-    List<Favourite> favouriteMovies;
+
 
 
     public List<Movie> getMovies() {

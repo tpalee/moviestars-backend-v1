@@ -58,6 +58,7 @@ public class Movie {
 
 //Movie to favourite relation
 @OneToMany(mappedBy = "movie")
+@JsonBackReference
 List<Favourite> favouriteMovies;
 
     public List<Favourite> getFavouriteMovies() {

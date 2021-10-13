@@ -1,13 +1,15 @@
 package com.example.Moviestars.commandLineRunner;
-import com.example.Moviestars.model.Movie;
-import com.example.Moviestars.model.Review;
-import com.example.Moviestars.model.User;
+import com.example.Moviestars.model.*;
+import com.example.Moviestars.repository.FavouriteRepository;
 import com.example.Moviestars.repository.MovieRepository;
 import com.example.Moviestars.repository.ReviewRepository;
 
 import com.example.Moviestars.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
@@ -20,6 +22,8 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FavouriteRepository favouriteRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -48,6 +52,23 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         Review review2=new Review("nice movie", 6.0, movie1);
         reviewRepository.save(review2);
 
+
+        Favourite favourite = new Favourite();
+        FavouriteKey favouriteKey = new FavouriteKey();
+        favouriteKey.setUserName(user1.getUserName());
+        favouriteKey.setId(movie1.getId());
+
+
+        favourite.setUser(user2);
+        favourite.setMovie(movie1);
+        favourite.setId(favouriteKey);
+        favouriteRepository.save(favourite);
+
+        //Test remove movie
+
+        List<Favourite> favourites = favouriteRepository.findAllByMovie(movie1);
+        favouriteRepository.deleteAll(favourites);
+        movieRepository.delete(movie1);
 
 
 
