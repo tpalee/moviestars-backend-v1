@@ -66,9 +66,14 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
 
         //Test remove movie
 
+
+/*
         List<Favourite> favourites = favouriteRepository.findAllByMovie(movie1);
         favouriteRepository.deleteAll(favourites);
-        movieRepository.delete(movie1);
+        //TODO cascade delete reviews on deleting movie?
+        List<Review> reviews = reviewRepository.findAllByMovie(movie1);
+        reviewRepository.deleteAll(reviews);
+        movieRepository.delete(movie1);*/
 
 
 

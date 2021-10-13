@@ -56,10 +56,10 @@ public class Movie {
     @JsonManagedReference
     private User user;
 
-//Movie to favourite relation
-@OneToMany(mappedBy = "movie")
-@JsonBackReference
-List<Favourite> favouriteMovies;
+    //Movie to favourite relation
+    @OneToMany(mappedBy = "movie")
+    @JsonBackReference
+    List<Favourite> favouriteMovies;
 
     public List<Favourite> getFavouriteMovies() {
         return favouriteMovies;
@@ -82,9 +82,8 @@ List<Favourite> favouriteMovies;
         this.movieImage = movieImage;
         this.movieRating = movieRating;
         this.movieIsRated = movieIsRated;
-        this.user=user;
+        this.user = user;
     }
-
 
 
     //getters and setters
@@ -160,16 +159,16 @@ List<Favourite> favouriteMovies;
         this.movieGenre = movieGenre;
     }
 
-    public List<Review>getReviews(){
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews){
-        this.reviews=reviews;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     //methods
-    void addReview(Review review){
+    void addReview(Review review) {
         this.reviews.add(review);
     }
 }
